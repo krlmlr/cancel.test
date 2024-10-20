@@ -1,3 +1,8 @@
 pkgload::load_all()
 
-fun()
+tryCatch(
+  fun(),
+  interrupt = function(e) {
+    message("Interrupted, seen in R code")
+  }
+)

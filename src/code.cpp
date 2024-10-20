@@ -1,9 +1,16 @@
 #include <cpp11.hpp>
+#include "cpp11/protect.hpp"
 
 #include <ctime>
 #include <csignal>
 
 using namespace cpp11;
+
+#include <R_ext/GraphicsEngine.h>
+
+extern "C" {
+  void Rf_onintrNoResume();
+}
 
 class LocalSignalHandler {
 private:
@@ -46,12 +53,16 @@ LocalSignalHandler* LocalSignalHandler::instance = nullptr;
 void fun() {
   LocalSignalHandler handler;
 
-  for (int i = 0; i < 10000; i++) {
+  for (int i = 0; i < 3; i++) {
+    cpp11::message("Iteration %d", i);
     timespec ts = {1, 0};
     nanosleep(&ts, NULL);
-    cpp11::message("Iteration %d", i);
     if (handler.GetSignalReceived()) {
-      cpp11::stop("Interrupted!");
+      cpp11::safe[Rf_onintr]();
+      // FIXME: Is the following better? cpp11::safe[Rf_onintrNoResume]();
+      break;
     }
   }
+
+  cpp11::message("Done");
 }
