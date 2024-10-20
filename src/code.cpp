@@ -4,8 +4,6 @@
 #include <ctime>
 #include <csignal>
 
-using namespace cpp11;
-
 #include <R_ext/GraphicsEngine.h>
 
 extern "C" {
@@ -23,6 +21,7 @@ private:
 
 public:
   LocalSignalHandler() {
+    cpp11::message("LocalSignalHandler constructor");
     if (instance != nullptr) {
       throw("Only one instance of LocalSignalHandler is allowed");
     }
@@ -31,6 +30,7 @@ public:
   }
 
   ~LocalSignalHandler() {
+    cpp11::message("LocalSignalHandler destructor");
     signal(SIGINT, oldhandler);
     instance = nullptr;
   }
