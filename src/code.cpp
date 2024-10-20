@@ -55,9 +55,9 @@ LocalSignalHandler* LocalSignalHandler::instance = nullptr;
 void fun() {
   LocalSignalHandler handler;
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 30; i++) {
     cpp11::message("Iteration %d", i);
-    timespec ts = {1, 0};
+    timespec ts = {0, 100000000};
     nanosleep(&ts, NULL);
     if (handler.GetSignalReceived()) {
       cpp11::safe[Rf_onintr]();
