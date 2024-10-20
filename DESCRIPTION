@@ -14,3 +14,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2.9000
 LinkingTo: 
     cpp11
+Config/build/compilation-database: true
