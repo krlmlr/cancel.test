@@ -1,6 +1,6 @@
 #include <cpp11.hpp>
 
-#include <time.h>
+#include <ctime>
 
 using namespace cpp11;
 
