@@ -1,6 +1,6 @@
 #include <cpp11.hpp>
 
-#include <unistd.h>
+#include <time.h>
 
 using namespace cpp11;
 
@@ -19,7 +19,9 @@ LibExtern int UserBreak;
 [[cpp11::register]]
 void fun() {
   for (int i = 0; i < 10000; i++) {
-    usleep(1000);
+    timespec ts = {1, 0};
+    nanosleep(&ts, NULL);
+    cpp11::message("Iteration %d", i);
     if (R_interrupts_pending) {
       cpp11::stop("Interrupted!");
     }
