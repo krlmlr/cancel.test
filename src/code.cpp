@@ -22,7 +22,7 @@ private:
 
 public:
   LocalSignalHandler() {
-    cpp11::message("LocalSignalHandler constructor");
+    // cpp11::message("LocalSignalHandler constructor");
     if (instance != nullptr) {
       throw("Only one instance of LocalSignalHandler is allowed");
     }
@@ -31,7 +31,8 @@ public:
   }
 
   ~LocalSignalHandler() {
-    cpp11::message("LocalSignalHandler destructor");
+    // Messages crash on Windows
+    // cpp11::message("LocalSignalHandler destructor");
     signal(SIGINT, oldhandler);
     instance = nullptr;
   }
