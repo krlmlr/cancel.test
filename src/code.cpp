@@ -8,8 +8,6 @@
 
 extern "C" {
   void Rf_onintrNoResume();
-
-  extern int R_interrupts_pending;
 }
 
 class LocalSignalHandler {
@@ -62,7 +60,6 @@ void fun() {
     timespec ts = {0, 100000000};
     nanosleep(&ts, NULL);
     if (handler.GetSignalReceived()) {
-      R_interrupts_pending = 1;
       cpp11::safe[Rf_onintr]();
       // FIXME: Is the following better? cpp11::safe[Rf_onintrNoResume]();
       break;
