@@ -8,6 +8,8 @@
 
 extern "C" {
   void Rf_onintrNoResume();
+
+  extern Rboolean R_interrupts_suspended;
 }
 
 class LocalSignalHandler {
@@ -55,11 +57,15 @@ LocalSignalHandler* LocalSignalHandler::instance = nullptr;
 void fun() {
   LocalSignalHandler handler;
 
+  cpp11::message("Interrupts are suspended: %d", R_interrupts_suspended);
+
   for (int i = 0; i < 30; i++) {
     cpp11::message("Iteration %d", i);
     timespec ts = {0, 100000000};
     nanosleep(&ts, NULL);
     if (handler.GetSignalReceived()) {
+      // Why does this message not come through in RStudio IDE on Windows?
+      cpp11::message("Interrupts are suspended: %d", R_interrupts_suspended);
       cpp11::safe[Rf_onintr]();
       // FIXME: Is the following better? cpp11::safe[Rf_onintrNoResume]();
       break;
