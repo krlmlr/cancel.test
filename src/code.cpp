@@ -24,7 +24,7 @@ private:
 
 public:
   LocalSignalHandler() {
-    // cpp11::message("LocalSignalHandler constructor");
+    Rprintf("LocalSignalHandler constructor\n");
     if (instance != nullptr) {
       throw("Only one instance of LocalSignalHandler is allowed");
     }
@@ -34,7 +34,7 @@ public:
 
   ~LocalSignalHandler() {
     // Messages crash on Windows
-    // cpp11::message("LocalSignalHandler destructor");
+    Rprintf("LocalSignalHandler destructor\n");
     signal(SIGINT, oldhandler);
     instance = nullptr;
   }
@@ -68,6 +68,9 @@ void fun() {
       cpp11::message("Interrupts are suspended: %d", R_interrupts_suspended);
       cpp11::safe[Rf_onintr]();
       // FIXME: Is the following better? cpp11::safe[Rf_onintrNoResume]();
+
+      Rprintf("Unreachable\n");
+
       break;
     }
   }
