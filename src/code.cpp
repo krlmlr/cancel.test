@@ -64,8 +64,7 @@ void fun() {
     timespec ts = {0, 100000000};
     nanosleep(&ts, NULL);
     if (handler.GetSignalReceived()) {
-      // Why does this message not come through in RStudio IDE on Windows?
-      cpp11::message("Interrupts are suspended: %d", R_interrupts_suspended);
+      Rprintf("Interrpts are suspended: %d\n", R_interrupts_suspended);
       cpp11::safe[Rf_onintr]();
       // FIXME: Is the following better? cpp11::safe[Rf_onintrNoResume]();
 
